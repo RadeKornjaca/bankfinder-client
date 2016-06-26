@@ -133,8 +133,8 @@ public class MapOverviewActivity extends FragmentActivity implements OnMapReadyC
                 VisibleRegion visibleRegion = mMap.getProjection().getVisibleRegion();
 
                 fetchLocationsIntent.setAction(MapSyncIntentService.ACTION_FETCH_LOCATIONS);
-                fetchLocationsIntent.putExtra(MapSyncIntentService.UPPER_LEFT_COORDINATE, visibleRegion.nearLeft);
-                fetchLocationsIntent.putExtra(MapSyncIntentService.DOWN_RIGHT_COORDINATE, visibleRegion.farRight);
+                fetchLocationsIntent.putExtra(MapSyncIntentService.UPPER_LEFT_COORDINATE, visibleRegion.farLeft);
+                fetchLocationsIntent.putExtra(MapSyncIntentService.DOWN_RIGHT_COORDINATE, visibleRegion.nearRight);
 
                 startService(fetchLocationsIntent);
             }

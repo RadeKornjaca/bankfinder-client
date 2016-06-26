@@ -4,9 +4,16 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 import pma.bankfinder.R;
 
@@ -28,6 +35,15 @@ public class GetMethod extends AbstractRequestMethod {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             Log.d(TAG, connection.getResponseMessage());
+
+            InputStream resultStream = new BufferedInputStream(connection.getInputStream());
+
+            try {
+                JSONArray JSONresult = new JSONArray(getResponseText(resultStream));
+                Log.d(TAG, JSONresult.toString(4));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,5 +60,9 @@ public class GetMethod extends AbstractRequestMethod {
         parametrizedURL.append(key + "=" + value);
 
         return parametrizedURL.toString();
+    }
+
+    private static String getResponseText(InputStream inStream) {
+        return new Scanner(inStream).useDelimiter("\\A").next();
     }
 }

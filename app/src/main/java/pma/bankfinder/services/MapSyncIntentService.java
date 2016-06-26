@@ -73,11 +73,6 @@ public class MapSyncIntentService extends IntentService {
         }
     }
 
-//    @Override
-//    public void onDestroy() {
-//        MapSyncQueue.getInstance().dequeueIntentAndStartService();
-//    }
-
     /**
      * Handle action Foo in the provided background thread with the provided
      * parameters.
