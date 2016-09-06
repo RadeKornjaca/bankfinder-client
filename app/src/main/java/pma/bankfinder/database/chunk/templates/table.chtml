@@ -1,0 +1,13 @@
+{# create }
+CREATE TABLE {$table_name}
+(
+_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+{% loop $attributes as $attr:$value %}
+{$attr} {$value}|field_type not null
+{% endloop %}
+);
+{#}
+
+{# drop }
+DROP TABLE IF EXISTS {$table_name}
+{#}

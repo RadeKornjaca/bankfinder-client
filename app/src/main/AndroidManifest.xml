@@ -32,7 +32,22 @@
 
         <activity
             android:name=".activities.MapOverviewActivity"
-            android:label="@string/title_activity_map_overview">
+            android:label="@string/title_activity_map_overview"></activity>
+
+        <service
+            android:name=".services.MapSyncIntentService"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.BankListActivity"
+            android:label="@string/title_activity_bank_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".services.BankSyncIntentService"
+            android:exported="false" />
+
+        <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,9 +55,11 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".services.MapSyncIntentService"
-            android:exported="false"></service>
+        <provider
+            android:name=".content_providers.BankfinderDatabaseContentProvider"
+            android:authorities="pma.bankfinder"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

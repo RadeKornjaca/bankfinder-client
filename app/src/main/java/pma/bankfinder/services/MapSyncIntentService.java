@@ -6,7 +6,14 @@ import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import pma.bankfinder.R;
 import pma.bankfinder.rest.GetMethod;
+import pma.bankfinder.rest.Method;
+import pma.bankfinder.rest.Parameter;
+import pma.bankfinder.rest.Request;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -80,7 +87,19 @@ public class MapSyncIntentService extends IntentService {
     private void handleActionFetchLocations(LatLng upperLeftCoordinates, LatLng downRightCoordinates) {
         GetMethod getRequest = new GetMethod();
 
-        getRequest.sendRequest(upperLeftCoordinates, downRightCoordinates);
+        String apiURL = getApplicationContext().getString(R.string.bankfinder_api_url);
+        String resource = "places";
+
+        List<Parameter> parameters = new ArrayList<Parameter>();
+
+        parameters.add(new Parameter("top_lat", String.valueOf(upperLeftCoordinates.latitude)));
+        parameters.add(new Parameter("top_long", String.valueOf(upperLeftCoordinates.longitude)));
+        parameters.add(new Parameter("down_lat", String.valueOf(downRightCoordinates.latitude)));
+        parameters.add(new Parameter("down_long", String.valueOf(downRightCoordinates.longitude)));
+
+        Request request = new Request(apiURL, resource, parameters, Method.GET);
+
+        getRequest.sendRequest(request);
     }
 
     /**

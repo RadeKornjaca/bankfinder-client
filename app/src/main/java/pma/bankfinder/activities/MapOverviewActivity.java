@@ -5,9 +5,12 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewConfiguration;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,11 +21,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 
+import java.lang.reflect.Field;
+
 import pma.bankfinder.R;
 import pma.bankfinder.fragments.LocationUnavailableDialogFragment;
 import pma.bankfinder.services.MapSyncIntentService;
 
-public class MapOverviewActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapOverviewActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = MapOverviewActivity.class.getSimpleName();
 
     private GoogleMap mMap;
@@ -64,6 +69,7 @@ public class MapOverviewActivity extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map_overview);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -128,18 +134,39 @@ public class MapOverviewActivity extends FragmentActivity implements OnMapReadyC
         mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                Intent fetchLocationsIntent = new Intent(MapOverviewActivity.this, MapSyncIntentService.class);
-
                 VisibleRegion visibleRegion = mMap.getProjection().getVisibleRegion();
 
-                fetchLocationsIntent.setAction(MapSyncIntentService.ACTION_FETCH_LOCATIONS);
-                fetchLocationsIntent.putExtra(MapSyncIntentService.UPPER_LEFT_COORDINATE, visibleRegion.farLeft);
-                fetchLocationsIntent.putExtra(MapSyncIntentService.DOWN_RIGHT_COORDINATE, visibleRegion.nearRight);
-
-                startService(fetchLocationsIntent);
+                MapSyncIntentService.startActionFetchLocations(getApplicationContext(), visibleRegion.farLeft, visibleRegion.nearRight);
             }
         });
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_bank_list:
+                Intent intent = new Intent(this, BankListActivity.class);
+                startActivity(intent);
+
+                return true;
+
+            case R.id.app_settings:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 }

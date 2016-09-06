@@ -3,4 +3,19 @@
     <string name="title_activity_map_overview">Map</string>
     <string name="dialog_location_unavailable">Location Unavailable</string>
     <string name="close_application">Close</string>
+    <string name="title_activity_bank_list">BankListActivity</string>
+
+    <string name="bankfinder_api_url">http://10.42.0.1:4567</string>
+
+    <string name="option_bank_list">Bank List</string>
+    <string name="app_settings">Settings</string>
+
+    <!-- Add ic_bank fragment -->
+    <string name="bank_name">Name</string>
+    <string name="bank_official_website">Official Website</string>
+
+    <string name="add_bank_btn">Add Bank</string>
+
+
+    <string name="cancel_btn">Cancel</string>
 </resources>
