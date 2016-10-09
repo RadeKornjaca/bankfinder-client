@@ -6,11 +6,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewConfiguration;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,9 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
 
-import java.lang.reflect.Field;
-
 import pma.bankfinder.R;
+import pma.bankfinder.activities.decorators.ToolbarDecorator;
 import pma.bankfinder.fragments.LocationUnavailableDialogFragment;
 import pma.bankfinder.services.MapSyncIntentService;
 
@@ -64,11 +65,20 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
 
     private static final int ZOOM_LEVEL = 15;
 
+    // Used for back button behavior override
+
+    private Toast toast;
+    private boolean doubleBackToExitPressedOnce = false;
+    private static final int DELAY_TIME = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map_overview);
+
+        ToolbarDecorator toolbarDecorator = new ToolbarDecorator(this, findViewById(R.id.activity_map_overview_id), R.id.toolbar, "Freefinder");
+        toolbarDecorator.decorate();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -151,15 +161,15 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.option_bank_list:
-                Intent intent = new Intent(this, BankListActivity.class);
-                startActivity(intent);
+            case R.id.option_category_list:
+                Intent categoriesIntent = new Intent(this, CategoryListActivity.class);
+                startActivity(categoriesIntent);
 
                 return true;
 
             case R.id.app_settings:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
 
             default:
@@ -168,5 +178,26 @@ public class MapOverviewActivity extends AppCompatActivity implements OnMapReady
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            toast.cancel();
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        toast = Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT);
+        toast.show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, DELAY_TIME);
     }
 }

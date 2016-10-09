@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">Bankfinder</string>
-    <string name="title_activity_map_overview">Map</string>
+    <string name="app_name">Freefinder</string>
     <string name="dialog_location_unavailable">Location Unavailable</string>
     <string name="close_application">Close</string>
     <string name="title_activity_bank_list">BankListActivity</string>
 
-    <string name="bankfinder_api_url">http://10.42.0.1:4567</string>
+    <string name="freefinder_api_url">http://10.42.0.1:3000</string>
+    <!-- <string name="freefinder_api_url">http://192.168.0.13:3000</string> -->
+    <!-- <string name="freefinder_api_url">http://147.91.164.220:3000</string> -->
 
-    <string name="option_bank_list">Bank List</string>
+    <string name="option_category_list">Categories</string>
     <string name="app_settings">Settings</string>
 
     <!-- Add ic_bank fragment -->
@@ -18,4 +19,16 @@
 
 
     <string name="cancel_btn">Cancel</string>
-</resources>
+    <string name="credentials_settings_title">Credentials</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in_title">Sign In</string>
+    <string name="sign_in_summary">User sign in with existing Freefinder account</string>
+
+    <string name="first_time_fragment">Hi there! Seems like you\'re first time using Freefinder app on this device. If you haven\'t used it before on any other device, please proceed with registration, otherwise provide your existing credentials in settings. You can sign in any time by going to Freefinder\'s Settings.</string>
+
+    <!-- Keys for the settings parameters -->
+    <string name="settings_access_token">accessToken</string>
+
+    </resources>

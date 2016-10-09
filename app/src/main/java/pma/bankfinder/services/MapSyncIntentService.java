@@ -85,9 +85,6 @@ public class MapSyncIntentService extends IntentService {
      * parameters.
      */
     private void handleActionFetchLocations(LatLng upperLeftCoordinates, LatLng downRightCoordinates) {
-        GetMethod getRequest = new GetMethod();
-
-        String apiURL = getApplicationContext().getString(R.string.bankfinder_api_url);
         String resource = "places";
 
         List<Parameter> parameters = new ArrayList<Parameter>();
@@ -97,9 +94,10 @@ public class MapSyncIntentService extends IntentService {
         parameters.add(new Parameter("down_lat", String.valueOf(downRightCoordinates.latitude)));
         parameters.add(new Parameter("down_long", String.valueOf(downRightCoordinates.longitude)));
 
-        Request request = new Request(apiURL, resource, parameters, Method.GET);
+        Request request = new Request(getString(R.string.freefinder_api_url), resource, parameters);
+        GetMethod getRequest = new GetMethod(getApplicationContext(), request);
 
-        getRequest.sendRequest(request);
+        getRequest.responseCollection();
     }
 
     /**

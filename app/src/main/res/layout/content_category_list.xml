@@ -9,7 +9,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pma.bankfinder.activities.BankListActivity"
-    tools:showIn="@layout/activity_bank_list">
+    tools:context=".activities.CategoryListActivity"
+    tools:showIn="@layout/activity_category_list">
+
+    <ListView
+        android:id="@+id/category_list"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+    </ListView>
 
 </RelativeLayout>

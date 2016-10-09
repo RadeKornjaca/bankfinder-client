@@ -1,6 +1,11 @@
 package pma.bankfinder.rest;
 
 import android.content.res.Resources;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,35 +23,11 @@ public class Request {
     private String apiURL;
     private String resource;
     private List<Parameter> parameters;
-    private Method method;
 
-    public Request(String apiURL, String resource, List<Parameter> parameters, Method method) {
+    public Request(String apiURL, String resource, List<Parameter> parameters) {
         this.apiURL = apiURL;
         this.resource = resource;
         this.parameters = parameters;
-        this.method = method;
-    }
-
-    public URL buildURL() throws MalformedURLException {
-        StringBuilder URLStringBuilder = new StringBuilder();
-
-        URLStringBuilder.append(apiURL);
-        URLStringBuilder.append("/");
-        URLStringBuilder.append(resource);
-
-        if(this.method == Method.GET && parameters != null) {
-            URLStringBuilder.append("?");
-
-            String delimiter = "";
-            for(Parameter parameter : parameters) {
-                URLStringBuilder.append(delimiter).
-                        append(parameter.getFieldName() + "=" + parameter.getFieldValue());
-                delimiter = "&";
-            }
-
-        }
-
-        return new URL(URLStringBuilder.toString());
     }
 
     public String getApiURL() {
@@ -61,7 +42,4 @@ public class Request {
         return parameters;
     }
 
-    public Method getMethod() {
-        return method;
-    }
 }

@@ -1,23 +1,14 @@
 package pma.bankfinder.rest;
 
+import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import pma.bankfinder.R;
 
 /**
  * Created by rade on 6/19/16.
@@ -25,31 +16,44 @@ import pma.bankfinder.R;
 public class GetMethod extends AbstractRequestMethod {
     private static final String TAG = GetMethod.class.getSimpleName();
 
-    public void sendRequest(Request request) {
-        try {
-            URL url = request.buildURL();
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    public GetMethod(Context context, Request request) {
+        super(context, request);
+    }
 
-            Log.d(TAG, connection.getResponseMessage());
+    @Override
+    public URL buildURL() throws MalformedURLException{
+        URL superURL = super.buildURL();
+
+        StringBuilder URLStringBuilder = new StringBuilder(superURL.toString());
+
+        URLStringBuilder.append("?");
+
+        String delimiter = "";
+        for(Parameter parameter : request.getParameters()) {
+            URLStringBuilder.append(delimiter).
+                    append(parameter.getFieldName() + "=" + parameter.getFieldValue());
+            delimiter = "&";
+        }
+
+        return new URL(URLStringBuilder.toString());
+    }
+
+    @Override
+    public String sendRequest() {
+        String responseText = null;
+
+        try {
+            URL url = this.buildURL();
+            HttpURLConnection connection = super.createConnection(url);
 
             InputStream resultStream = new BufferedInputStream(connection.getInputStream());
 
-            try {
-                JSONArray JSONresult = new JSONArray(getResponseText(resultStream));
-                Log.d(TAG, JSONresult.toString(4));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            responseText = getResponseText(resultStream);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-    }
-
-
-
-    private static String getResponseText(InputStream inStream) {
-        return new Scanner(inStream).useDelimiter("\\A").next();
+        return responseText;
     }
 }

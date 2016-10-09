@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/credentials_settings_title"
+        android:key="credentials_settings">
+
+        <PreferenceScreen
+            android:title="@string/sign_in_title"
+            android:summary="@string/sign_in_summary">
+            <intent android:action=".activities.SignInActivity"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>

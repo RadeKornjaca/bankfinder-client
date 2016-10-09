@@ -78,14 +78,13 @@ public class BankSyncIntentService extends IntentService {
      * parameters.
      */
     private void handleActionFetchBanks() {
-        GetMethod getRequest = new GetMethod();
+        String apiURL = getApplicationContext().getString(R.string.freefinder_api_url);
+        String resource = "categories";
 
-        String apiURL = getApplicationContext().getString(R.string.bankfinder_api_url);
-        String resource = "banks";
+        Request request = new Request(apiURL, resource, null);
+        GetMethod getRequest = new GetMethod(getApplicationContext(), request);
 
-        Request request = new Request(apiURL, resource, null, Method.GET);
-
-        getRequest.sendRequest(request);
+        getRequest.responseCollection();
     }
 
     /**
