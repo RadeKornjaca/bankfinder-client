@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,14 @@ public class CategorySyncAdapter extends AbstractThreadedSyncAdapter {
         Request request = new Request(apiUrl, "categories", parameters);
         GetMethod categoriesGetMethod = new GetMethod(getContext(), request);
 
-        JSONArray responseJSON = categoriesGetMethod.responseCollection();
+        JSONArray responseJSON = null;
+        try {
+            responseJSON = categoriesGetMethod.response().getJSONArray("categories");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         ActiveAndroid.beginTransaction();
         try {

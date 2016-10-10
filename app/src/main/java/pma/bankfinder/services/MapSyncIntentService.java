@@ -6,6 +6,10 @@ import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +101,17 @@ public class MapSyncIntentService extends IntentService {
         Request request = new Request(getString(R.string.freefinder_api_url), resource, parameters);
         GetMethod getRequest = new GetMethod(getApplicationContext(), request);
 
-        getRequest.responseCollection();
+        getRequest.sendRequest();
+
+        JSONArray response;
+
+        try {
+            response = getRequest.response().getJSONArray("places");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

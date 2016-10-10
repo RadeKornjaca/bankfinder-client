@@ -45,6 +45,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Request request = new Request(getString(R.string.freefinder_api_url), "users", parameters);
         PostMethod postMethod = new PostMethod(this, request, "user");
 
-        new RegistrationAsyncTask().execute(postMethod);
+        new RegistrationAsyncTask(this).execute(postMethod);
     }
 }

@@ -47,7 +47,7 @@
             android:parentActivityName=".activities.MapOverviewActivity" />
 
         <service
-            android:name=".services.BankSyncIntentService"
+            android:name=".services.CategorySyncIntentService"
             android:exported="false" />
 
         <activity android:name=".activities.SplashScreenActivity">

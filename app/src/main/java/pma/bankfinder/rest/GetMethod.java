@@ -39,21 +39,18 @@ public class GetMethod extends AbstractRequestMethod {
     }
 
     @Override
-    public String sendRequest() {
-        String responseText = null;
-
+    public void sendRequest() {
         try {
             URL url = this.buildURL();
-            HttpURLConnection connection = super.createConnection(url);
-
-            InputStream resultStream = new BufferedInputStream(connection.getInputStream());
-
-            responseText = getResponseText(resultStream);
+            this.httpURLConnection = super.createConnection(url);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-        return responseText;
+    @Override
+    public boolean isSuccessful() throws  IOException {
+        return httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK;
     }
 }

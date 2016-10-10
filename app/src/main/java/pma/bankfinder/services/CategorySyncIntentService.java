@@ -4,9 +4,13 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+
 import pma.bankfinder.R;
 import pma.bankfinder.rest.GetMethod;
-import pma.bankfinder.rest.Method;
 import pma.bankfinder.rest.Request;
 
 /**
@@ -16,7 +20,7 @@ import pma.bankfinder.rest.Request;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class BankSyncIntentService extends IntentService {
+public class CategorySyncIntentService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FETCH_BANKS = "pma.bankfinder.services.action.FETCH_BANKS";
@@ -26,8 +30,8 @@ public class BankSyncIntentService extends IntentService {
     private static final String EXTRA_PARAM1 = "pma.bankfinder.services.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "pma.bankfinder.services.extra.PARAM2";
 
-    public BankSyncIntentService() {
-        super("BankSyncIntentService");
+    public CategorySyncIntentService() {
+        super("CategorySyncIntentService");
     }
 
     /**
@@ -38,7 +42,7 @@ public class BankSyncIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionFetchBanks(Context context) {
-        Intent intent = new Intent(context, BankSyncIntentService.class);
+        Intent intent = new Intent(context, CategorySyncIntentService.class);
         intent.setAction(ACTION_FETCH_BANKS);
 
         context.startService(intent);
@@ -52,7 +56,7 @@ public class BankSyncIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, BankSyncIntentService.class);
+        Intent intent = new Intent(context, CategorySyncIntentService.class);
         intent.setAction(ACTION_BAZ);
         intent.putExtra(EXTRA_PARAM1, param1);
         intent.putExtra(EXTRA_PARAM2, param2);
@@ -84,7 +88,15 @@ public class BankSyncIntentService extends IntentService {
         Request request = new Request(apiURL, resource, null);
         GetMethod getRequest = new GetMethod(getApplicationContext(), request);
 
-        getRequest.responseCollection();
+        JSONArray response;
+
+        try {
+            response = getRequest.response().getJSONArray(resource);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

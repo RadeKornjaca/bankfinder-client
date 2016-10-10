@@ -32,37 +32,30 @@ public class PostMethod extends AbstractRequestMethod {
     }
 
     @Override
-    public String sendRequest() {
+    public void sendRequest() {
         String responseText = null;
 
         try {
             URL url = this.buildURL();
-            HttpURLConnection connection = super.createConnection(url);
+            httpURLConnection = super.createConnection(url);
 
-            connection.setRequestMethod("POST");
-            connection.setDoOutput(true);
-            connection.connect();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
 
-            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpURLConnection.getOutputStream());
 
             // byte[] byteParameters = this.getParametersAsJSON().toString().getBytes("UTF-8");
-            out.write(this.getParametersAsJSON().toString());
-            out.flush();
+            outputStreamWriter.write(this.getParametersAsJSON().toString());
+            outputStreamWriter.flush();
 
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
+            if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_CREATED) {
                 throw new RuntimeException("Failed : HTTP error code : "
-                        + connection.getResponseCode());
+                        + httpURLConnection.getResponseCode());
             }
-
-            InputStream resultStream = new BufferedInputStream(connection.getInputStream());
-
-            responseText = getResponseText(resultStream);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return responseText;
     }
 
     private JSONObject getParametersAsJSON() {
@@ -82,5 +75,11 @@ public class PostMethod extends AbstractRequestMethod {
         }
 
         return objectJSON;
+    }
+
+    @Override
+    public boolean isSuccessful() throws IOException{
+        return httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_CREATED;
+
     }
 }
